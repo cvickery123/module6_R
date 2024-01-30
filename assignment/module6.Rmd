@@ -79,13 +79,13 @@ There are a total of 27 questions embedded throughout this module, many of which
 
 **Q.1 (Shiny)** What is meant by the term 'uncertainty' in the context of ecological forecasting?
 
-**Answer Q.1**
+**Answer Q.1** Uncertainty in the context of ecological forecasting means "the range of possible alternative future conditions predicted by a model". Because we cannot know the future, we cannot accurately predict a singular future outcome with complete certainty. We, therefore, need to represent all possible outcomes using uncertainty.   
 
 
 
 **Q.2 (Shiny)** How do you think knowing the uncertainty in a forecast helps natural resource managers? For example, if a drinking water manager received a toxic algal bloom forecast with high vs. low uncertainty in a bloom prediction, how might that affect their decision-making?
 
-**Answer Q.2**
+**Answer Q.2** Knowing the uncertainty helps natural resource managers weigh their decisions against model outcomes. Model outcomes with low uncertainty would allow managers to be more confident to use the model to inform decisions and to respond to the model predictions. Models with high uncertainty could prompt a natural resource manager to collect more data to reduce uncertainty or to respond less urgently to the model prediction. In the example of a drinking water manager receiving a toxic algal bloom forecast, a model with low uncertainty would cause them to mitigate the problem quickly and effectly, whereas a model with high uncertainty would give them pause before acting. 
 
 
 
@@ -119,11 +119,11 @@ Lake Barco is one of the lake sites in the U.S. National Ecological Observatory 
 
 **Answer Q.3**
 
-Four-letter site identifier:  
-Latitude:  
-Longitude:  
-Lake area (km2):  
-Elevation (m):  
+Four-letter site identifier:  BARC
+Latitude:  29.675982
+Longitude:  -82.008414
+Lake area (km2):  0.13 km2
+Elevation (m):  27m
 
 
 ### Water Temperature
@@ -138,7 +138,7 @@ Being able to predict how water temperature may change in the short-term (up to 
 
 **Q.4 (Shiny)** List two potential impacts on lakes and inland water bodies as a result of increasing water temperature.
 
-**Answer Q.4**
+**Answer Q.4** Increasing water temperature can stress fish populations to decrease their feeding and reproduction rates. Another result of increase water temperature could be increased likelihood in algal blooms, which could create anoxic environments over time. 
 
 
 
@@ -157,7 +157,7 @@ plot_lake_data(lake_df)
 
 **Q.5 (Shiny)** Do you think there is a strong relationship between air temperature and water temperature at this lake? 
 
-**Answer Q.5**
+**Answer Q.5** There looks to be a strong relationship between air and water temperature, given that increases in air temperature correspond with increases in water temperature. 
 
 
 ## Objective 2. Read in and visualize an air temperature forecast for Lake Barco 
@@ -209,7 +209,7 @@ plot_airtemp_forecast(lake_obs, weather_forecast, forecast_start_date)
 
 **Q.6 (Rmd)** Why are there multiple gray lines on the plot above? What do they represent? Be as specific as you can.  
 
-**Answer Q.6**
+**Answer Q.6** The gray lines are ensemble members, which each represent an equally plausible future outcome for air temperature in the future. There are multiple gray lines because of uncertainty in our model, including driver uncertainty and process uncertainty. 
 
 
 ## Objective 3. Build a linear regression forecast model 
@@ -317,12 +317,12 @@ mod_predictions_watertemp(lake_df2, pred)
 
 **Q.7 (Rmd)** Describe the structure of the multiple linear regression model in your own words. How is water temperature being predicted?  
 
-**Answer Q.7**
+**Answer Q.7** Water temperature is being predicted based on the current day's air temperature and the previous day's water temperature. These parameters are put into a multiple linear regression, which allowed us to calculate the coefficients and standard errors of the parameters. 
 
 
 **Q.8 (Rmd)** Examine the values of the fitted model parameters (`coeffs`). What does this tell you about the relative importance of past water temperature and current air temperature in driving current water temperature? Examine the standard errors of the parameters (`params_se`). What do the standard errors tell you about how confident we are in the fitted model parameter values?
 
-**Answer Q.8**
+**Answer Q.8** Yesterday's water temperature is a larger driver of current water temperature than air temperature because (t-1) water temperature has a larger coefficient than air temperature does. Both parameters have similar standard errors, which are less than 2%. With a general significance 
 
 
 **Q.9 (Rmd)** Assess the model fit. Examine the values of `r2`, `err`, and `rmse`, as well as the plot showing the model fit and observations. What does this tell you about model performance?  
