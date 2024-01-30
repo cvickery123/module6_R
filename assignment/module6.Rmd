@@ -322,12 +322,12 @@ mod_predictions_watertemp(lake_df2, pred)
 
 **Q.8 (Rmd)** Examine the values of the fitted model parameters (`coeffs`). What does this tell you about the relative importance of past water temperature and current air temperature in driving current water temperature? Examine the standard errors of the parameters (`params_se`). What do the standard errors tell you about how confident we are in the fitted model parameter values?
 
-**Answer Q.8** Yesterday's water temperature is a larger driver of current water temperature than air temperature because (t-1) water temperature has a larger coefficient than air temperature does. Both parameters have similar standard errors, which are less than 2%. With a general significance 
+**Answer Q.8** Yesterday's water temperature is a larger driver of current water temperature than air temperature because (t-1) water temperature has a larger coefficient than air temperature does. Both parameters have similar standard errors, which are less than 2%. With a general significance value of p<5%, our standard errors are acceptable and communicate a medium level of confidence in the fitted model parameter values.  
 
 
 **Q.9 (Rmd)** Assess the model fit. Examine the values of `r2`, `err`, and `rmse`, as well as the plot showing the model fit and observations. What does this tell you about model performance?  
 
-**Answer Q.9** 
+**Answer Q.9** Visually and according to the r2 value of 0.9, our model fits the data well. There are only a few data points that the model does not intersect when examining the plot visually. The rmse of 0.61 is a bit high on a scale of 0 to 1, so we could improve that statistic. Our mean bias is very small (3.58 e-15), so we see little difference between the model values and observed values. 
 
 
 ## Objective 4. Generate a deterministic forecast (without uncertainty)
@@ -390,16 +390,17 @@ for(i in 2:8){
   
 **Q.10 (Rmd)** Can you alter the code below to generate a **10-day** prediction of water temperature rather than a 7-day prediction? What is the predicted water temperature on the 10th day?  
   
-**Answer Q.10** Edit the code block to provide your answer.
+**Answer Q.10** Edit the code block to provide your answer. 
+The predicted water temperature on the 10th day is 16.1 degrees C. 
 ```{r}
 starting_temperature <- 15.2 #degrees C
 
-water_temperature <- rep(NA, 8)
+water_temperature <- rep(NA, 10)
 
 water_temperature[1] <- starting_temperature
 water_temperature
 
-for(i in 2:8){
+for(i in 2:10){
   water_temperature[i] = water_temperature[i-1] + 0.1 #degrees C
   print(water_temperature[i])
 }
@@ -481,7 +482,7 @@ plot_forecast(lake_obs,
 **Q.11 (Rmd)** Compare the water temperature forecast plot above to the plot of the NOAA GEFS air temperature forecast. Does the forecasted water temperature track the forecasted air temperature, and why might this be?  
 
 
-**Answer Q.11** 
+**Answer Q.11** The forecasted water temperature follows the same track as the forecasted air temperature, with the exception of the starting point and therefore slope before Sept 27. This relationship might be that both are informed by past water temperature data and that there is a relationship between air temperature and water temperature. It is important to note that the NOAA air temperature forecast includes uncertainty, while this deterministic forecast for water temperature does not. 
 
 
 ### What is wrong with deterministic forecasts?
