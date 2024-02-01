@@ -1134,14 +1134,17 @@ for(d in 2:length(forecasted_dates)) {
     temp_lag <- forecast_driver_unc2 %>%
       filter(forecast_date == forecasted_dates[d-1])
     
-  #run model - REVISE THIS!!!!!!
-    temp_pred$value <- coeffs[1] + temp_lag$value * coeffs[2] + temp_driv$air_temperature * coeffs[3] 
+  #pull wind speed values
+    wind_driv<-driver_data %>%
+      filter()
     
+  #run model - REVISE THIS!!!!!!
+    temp_pred$value <- coeffs[1] + temp_lag$value * coeffs[2] + temp_driv$air_temperature * coeffs[3] + coeffs[4] * temp_driv$wind_speed
+    #yesterday's water temp + air temp + wind speed
   #insert values back into the forecast dataframe
     forecast_driver_unc2 <- forecast_driver_unc2 %>%
       rows_update(temp_pred, by = c("forecast_date","ensemble_member","forecast_variable","uc_type"))
 }
-
 ```
 
 Build a plot of forecast output.
@@ -1178,7 +1181,8 @@ Now, we will generate parameter distributions based on parameter estimates for t
 ```{r}
 param.df <- data.frame(beta1 = rnorm(30, coeffs[1], params_se[1]),
                  beta2 = rnorm(30, coeffs[2], params_se[2]),
-                 beta3 = rnorm(30, coeffs[3], params_se[3]))
+                 beta3 = rnorm(30, coeffs[3], params_se[3]),
+                 beta4 = rnorm(30, coeffs[4], params_se[4]))
 ```
 
 Plot each of the parameter distributions you have created. 
@@ -1225,7 +1229,7 @@ for(d in 2:length(forecasted_dates)) {
       filter(forecast_date == forecasted_dates[d-1])
     
   #run the model using parameter distributions instead of fixed values - REVISE THIS!!
-    temp_pred$value <- param.df$beta1 + temp_lag$value * param.df$beta2 + temp_driv$air_temperature * param.df$beta3 
+    temp_pred$value <- param.df$beta1 + temp_lag$value * param.df$beta2 + temp_driv$air_temperature * param.df$beta3 + temp_driv$wind_speed * param.df$beta4
     
   #insert values back into the forecast dataframe
     forecast_parameter_unc2 <- forecast_parameter_unc2 %>%
@@ -1283,7 +1287,7 @@ for(d in 2:length(forecasted_dates)) {
       filter(forecast_date == forecasted_dates[d-1])
     
   #run model - REVISE THIS!!
-    temp_pred$value <- coeffs[1] + temp_lag$value * coeffs[2] + temp_driv$air_temperature * coeffs[3] + rnorm(30, mean = 0, sd = sigma)
+    temp_pred$value <- coeffs[1] + temp_lag$value * coeffs[2] + temp_driv$air_temperature * coeffs[3] + temp_driv$wind_speed * coeffs[4] + rnorm(30, mean = 0, sd = sigma) 
     
   #insert values back into the forecast dataframe
     forecast_process_unc2 <- forecast_process_unc2 %>%
@@ -1358,7 +1362,7 @@ for(d in 2:length(forecasted_dates)) {
       filter(forecast_date == forecasted_dates[d-1])
     
   #run model - REVISE THIS!!
-    temp_pred$value <- coeffs[1] + temp_lag$value * coeffs[2] + temp_driv$air_temperature * coeffs[3] 
+    temp_pred$value <- coeffs[1] + temp_lag$value * coeffs[2] + temp_driv$air_temperature * coeffs[3] + coeffs[4] * temp_driv$wind_speed
     
   #insert values back into the forecast dataframe
     forecast_ic_unc2 <- forecast_ic_unc2 %>%
@@ -1404,7 +1408,7 @@ plot_partitioned_uc(sd_df)
 
 **Q.25** Which source of uncertainty contributes the most to total forecast uncertainty for your model?
 
-**Answer Q.25**
+**Answer Q.25** Parameter uncertainty
 
 **Q26** Compare how total forecast uncertainty over time differed between forecasts made with your model vs. the multiple linear regression model fitted in the module6.Rmd. Be sure to address how the contribution of each of the four sources of uncertainty (process, parameter, initial conditions & driver) is different between the two models, and why this might be. 
 
