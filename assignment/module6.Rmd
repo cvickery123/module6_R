@@ -487,7 +487,7 @@ plot_forecast(lake_obs,
 
 ### What is wrong with deterministic forecasts?
 
-Using a **deterministic** forecast (e.g. a forecast which is one single line, with no uncertainty) is likely to wrong (even if only slightly) because it ignores the uncertainty that is inherently associated with the future.
+Using a **deterministic** forecast (e.g. a forecast which is one single line, with no uncertainty) is likely to be wrong (even if only slightly) because it ignores the uncertainty that is inherently associated with the future.
 
 There are many things that contribute to uncertainty when generating a forecast, and a forecast should represent the range of potential outcomes and the **likelihood** of such outcomes occurring.
 
@@ -552,13 +552,13 @@ plot_forecast(lake_obs,
 
 **Q.12 (Shiny)** How does forecast uncertainty change further into the future?
 
-**Answer Q.12**
+**Answer Q.12** Forecast uncertainty increases further into the future, as the ensemble members diverge further from the ensemble mean as time progresses. 
 
 
 
 **Q.13 (Rmd)** Compare the plot above of the probabilistic forecast with driver uncertainty to the plot of the deterministic forecast. How do the differences in these two forecasts affect your understanding of what water temperatures are likely to be during the week of the forecast?  
 
-**Answer Q.13** 
+**Answer Q.13** The probabilistic forecast presents more alternative futures than the deterministic forecast. The probabilistic forecast, therefore, shows a wider range of possible temperatures than the deterministic forecast. The differences in these two forecasts communicates that water temperature is more variable than the deterministic forecast predicted so that the water temperature could be up to a degree warmer or colder than was initially projected. Both forecasts, however, follow the same general shape, warming until September 28 or 29, then cooling off significantly thereafter. Because of this similarity, I have confidence that the water temperature will likely follow this trajectory of warming then cooling off around that date. 
 
 
 
@@ -566,7 +566,7 @@ plot_forecast(lake_obs,
 
 **Parameter uncertainty** refers to the uncertainty in the model parameter values, which can be due to having a limited set of data used to calibrate a model.
 
-With traditional modelling efforts, people general find one set of the 'best fit' parameters and use them to predict with their model. 
+With traditional modelling efforts, people generally find one set of the 'best fit' parameters and use them to predict with their model. 
 
 This method does not account for the uncertainty around the estimation of these parameters.  
 
@@ -681,7 +681,7 @@ plot_forecast(lake_obs,
 **Q.14 (Shiny)** Can you think of potential ways to reduce parameter uncertainty?
 
 
-**Answer Q.14**
+**Answer Q.14** We could reduce parameter uncertainty with more data that we can use to train our model. As the dataset increases in longevity, our parameter uncertainty will decrease if we look back into the past long enough to more accurately train our model. 
 
 
 
@@ -844,7 +844,7 @@ plot_forecast(lake_obs,
 **Q.15 (Shiny)** What factors can lead to an increase in initial conditions uncertainty?
 
 
-**Answer Q.15**
+**Answer Q.15** Sensors that have been out for a long time without recalibration could lead to uncertainty in the initial condition data reading. Sensor placement could also factor into initial conditions uncertainty; for example, if the sensor is placed right below an input stream, the water temperature might be colder or warmer than the overall lake temperature. 
 
 
 
@@ -928,14 +928,14 @@ plot_partitioned_uc(sd_df)
 
 **Q.16 (Shiny)** Which source of uncertainty contributes the most to total forecast uncertainty? 
 
-**Answer Q.16**
+**Answer Q.16** Parameter uncertainty contributes the most to total forecast uncertainty. 
 
 
 
 
 **Q.17 (Rmd)** Do you think that different water temperature forecast models would have the same or different quantities of uncertainty? Why?
 
-**Answer Q.17**
+**Answer Q.17** Forecast uncertainty is specific to the forecast model. Different water temperature forecast models would have different quantities of uncertainty because uncertainty comes from many different sources. For example, using different parameters for this forecast would most greatly influence forecast uncertainty because parameter uncertainty is the largest source of uncertainty for this forecast. 
 
 
 
@@ -997,7 +997,7 @@ model_data <- lake_df %>%
 **Answer Q.18** Edit the code block to provide your answer
 
 ```{r}
-fit <- lm(model_data$wtemp ~ model_data$wtemp_yday + model_data$airt) #INSERT ADDITIONAL COVARIATES IN THE PARENTHESES
+fit <- lm(model_data$wtemp ~ model_data$wtemp_yday + model_data$airt + model_data$wnd) #INSERT ADDITIONAL COVARIATES IN THE PARENTHESES
 fit_summary <- summary(fit)
 ```
 
@@ -1049,7 +1049,7 @@ mod_predictions_watertemp(lake_df2, pred)
 
 **Q.19** Describe the structure of the multiple linear regression model in your own words. How is water temperature being predicted? How does the structure of this model differ from the model fitted previously? 
   
-**Answer Q.19**
+**Answer Q.19** The multiple linear regression model is predicting water temperature using yesterday's water temperature, today's air temperature, and today's wind speed. The structure of this model differs from the previously fitted model with the addition of one more parameter, which adds more parameter uncertainty. Visually, this model fits the observed data less well than the previous linear regression. 
   
   
   
@@ -1141,6 +1141,7 @@ for(d in 2:length(forecasted_dates)) {
     forecast_driver_unc2 <- forecast_driver_unc2 %>%
       rows_update(temp_pred, by = c("forecast_date","ensemble_member","forecast_variable","uc_type"))
 }
+
 ```
 
 Build a plot of forecast output.
